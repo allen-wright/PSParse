@@ -1,5 +1,5 @@
 chrome.runtime.onInstalled.addListener(function() {
-  chrome.storage.local.set({games: []}, () => console.log('games array initialized.'));
+  chrome.storage.local.set({games: [], markdown: '| Game | Price | % Off | PS+ Price | PS+ % Off |\n| --- | --- | --- | --- | --- |'}, () => console.log('games array initialized.'));
 });
 
 chrome.runtime.onInstalled.addListener(function() {

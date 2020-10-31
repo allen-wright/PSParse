@@ -11,10 +11,11 @@
     </head>
     <body>
       <button id="parseButton">Parse Store Page</button>
-      <p>Current listings: <span id="listings"></span></p>
-      <button id="generate">Generate Markdown</button>
+      <p>Current listings: <span id="listings">0</span></p>
+      <button id="copy">Copy Markdown</button>
+      <button id="reset">Reset listings</button>
       <br />
-      <textarea style="resize: none" id="markdown-preview" name="markdown-preview" rows="4" cols="50"></textarea>
+      <textarea style="resize: none" id="markdown-preview" name="markdown-preview" rows="4" cols="50">| Game | Price | % Off | PS+ Price | PS+ % Off |\n| --- | --- | --- | --- | --- |</textarea>
       <script src="popup.js"></script>
     </body>
   </html>
