@@ -2,6 +2,10 @@
   <html>
     <head>
       <style>
+        html, body {
+          background-color: #121212;
+          color: white;
+        }
         button {
           height: 25px;
           width: auto;
@@ -10,9 +14,8 @@
       </style>
     </head>
     <body>
-      <button id="parseButton">Parse Store Page</button>
       <p>Current listings: <span id="listings">0</span></p>
-      <button id="copy">Copy Markdown</button>
+      <button id="parseButton">Parse Store Page</button>
       <button id="reset">Reset listings</button>
       <br />
       <textarea style="resize: none" id="markdown-preview" name="markdown-preview" rows="4" cols="50">| Game | Price | % Off | PS+ Price | PS+ % Off |\n| --- | --- | --- | --- | --- |</textarea>
