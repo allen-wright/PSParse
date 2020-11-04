@@ -23,7 +23,6 @@ function getPSPlusDiscount(details, listing) {
 }
 
 function getDetails(details, listing) {
-  console.log(details[0].className);
   // we can tell what the status of a listing is (sale, sale with PS Plus sale, no sale, etc) by analyzing the structure of the tile details DOM element
   switch (details[0].className) {
     case 'discount-badge__container psw-l-anchor':

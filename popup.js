@@ -13,7 +13,6 @@ chrome.storage.local.get(['games', 'markdown'], function(results) {
 })
 
 let callback = function(results) {
-  console.log(results);
   games = games.concat(results[0]);
   chrome.storage.local.set({games}, function() {
     chrome.storage.local.get(['games'], function(results) {
