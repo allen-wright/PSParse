@@ -13,6 +13,7 @@ chrome.storage.local.get(['games', 'markdown'], function(results) {
 })
 
 let callback = function(results) {
+  console.log(results);
   games = games.concat(results[0]);
   chrome.storage.local.set({games}, function() {
     chrome.storage.local.get(['games'], function(results) {
@@ -27,7 +28,7 @@ function generateMarkdown() {
   let newMarkdown = markdownTableHeader;
   for (let i = 0; i < games.length; i++) {
     games[i].name = games[i].name.replace('/[\^$.|?*+(){}/gi|', '\\$&');
-    newMarkdown += `\n[${games[i].name}](${games[i].link}) | ${games[i].salePrice} | ${games[i].salePercentage} | ${games[i].psPrice} | ${games[i].psPercentage}`;
+    newMarkdown += `\n[${games[i].name}](${games[i].link}) | ${games[i].salePrice} | ${games[i].salePercentage || 'N/A'} | ${games[i].psPrice || 'N/A'} | ${games[i].psPercentage || 'N/A'}`;
   }
   chrome.storage.local.set({markdown: newMarkdown}, function() {
     textarea.value = newMarkdown;
