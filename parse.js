@@ -7,37 +7,33 @@ function getTelemetryData(telemetry, listing) {
   return listing;
 }
 
-function getDiscount(details, listing) {
-  listing.salePercentage = details[0].children[0].innerText;
-  listing.originalPrice = details[1].children[1].innerText;
-  return listing;
-}
-
-function getPSPlusDiscount(details, listing) {
-  let psDiscount = parseInt(parseInt(details[0].innerText.match(/[0-9]{1,2}/)[0]) - parseInt(details[1].innerText));
-  listing.psPercentage = `-${psDiscount}%`;
-  listing.psPrice = '$' + ((parseFloat(details[2].children[1].innerText.substring(1)) * (1 - (Math.abs(psDiscount)/100))).toFixed(2));
-  listing.salePercentage = details[1].children[0].innerText;
-  listing.originalPrice = details[2].children[1].innerText;
-  return listing;
-}
-
 function getDetails(details, listing) {
-  // we can tell what the status of a listing is (sale, sale with PS Plus sale, no sale, etc) by analyzing the structure of the tile details DOM element
-  switch (details[0].className) {
-    case 'discount-badge__container psw-l-anchor':
-      // listing has a discount, but not a PS+ discount
-      listing = getDiscount(details, listing);
-      break;
-    case 'product-detail__container':
-      // DOM element may be a pre-order, or included in PSNow/EA, so it's necessary to still check if it contains a PS+ icon
-      // if it does, then it will have a PS+ discount
-      if (details[0].children[0].children[0].className.includes('psw-icon')) {
-        listing = getPSPlusDiscount(details, listing);
+  // need to loop through all of the details, as the PS Store keeps changing and we can't simply use the array index
+  for (let i = 0; i < details.children.length; i++) {
+    let element = details.children[i];
+    // checks for the sale percentage
+    if (element.className === 'discount-badge__container psw-l-anchor') {
+      listing.salePercentage = element.innerText;
+    }
+    // checks for the price container
+    if (element.className === 'price__container') {
+      if (element.children[1].className === 'price price--strikethrough') {
+        listing.originalPrice = element.children[1].innerText;
       }
-      break;
-    default:
-      break;
+    }
+    if (element.className === 'product-detail__container') {
+      if (element.children[0].children[0].className.includes('psw-icon--ps-plus')) {
+        let psElement = element.children[0].children[1];
+        listing.psPercentage = `-${psElement.innerText.match(/[0-9]{1,2}/)[0]}%`;
+      }
+    }
+  }
+  // format PS+ percentage/discount, if there is one
+  if (listing.psPercentage) {
+    listing.psPercentage = `${parseInt(parseInt(listing.salePercentage) + parseInt(listing.psPercentage))}%`;
+    let priceFloat = parseFloat(listing.originalPrice.replace('$', ''));
+    let psInt = parseFloat((1 - (Math.abs(parseInt(listing.psPercentage))/100)).toFixed(2));
+    listing.psPrice = `$${(Math.floor((priceFloat * psInt) * 100)) / 100}`;
   }
   return listing;
 }
@@ -50,7 +46,7 @@ function parsePage() {
     let listing = {};
     let item = items[i];
     listing = getTelemetryData(item.dataset.telemetryMeta, listing);
-    listing = getDetails(item.children[1].children, listing);
+    listing = getDetails(item.children[1], listing);
     listings.push(listing);
   }
   return listings;
