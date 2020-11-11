@@ -27,7 +27,7 @@ function generateMarkdown() {
   let newMarkdown = markdownTableHeader;
   for (let i = 0; i < games.length; i++) {
     games[i].name = games[i].name.replace('/[\^$.|?*+(){}/gi|', '\\$&');
-    newMarkdown += `\n[${games[i].name}](${games[i].link}) | ${games[i].salePrice} | ${games[i].salePercentage || 'N/A'} | ${games[i].psPrice || 'N/A'} | ${games[i].psPercentage || 'N/A'}`;
+    newMarkdown += `\n[${games[i].name}](${games[i].link}) | ${games[i].salePrice} | ${games[i].salePercentage || ''} | ${games[i].psPrice || ''} | ${games[i].psPercentage || ''}`;
   }
   chrome.storage.local.set({markdown: newMarkdown}, function() {
     textarea.value = newMarkdown;
