@@ -1,7 +1,7 @@
 {
   "name": "PSParse",
   "description": "Parses the late 2020 PlayStation Store redesign.",
-  "version": "0.2",
+  "version": "0.3",
   "icons": {
     "16": "images/psp16.png",
     "32": "images/psp32.png",
